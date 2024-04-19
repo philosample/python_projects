@@ -26,6 +26,8 @@ class Lane:
         for car in self.cars:
             car.move(player_pos)
             if car.last_segment.xcor() < -310:
+                for segment in car.segments:
+                    segment.clear()
                 self.cars.remove(car)
             if car.collision:                
                 self.collision = True

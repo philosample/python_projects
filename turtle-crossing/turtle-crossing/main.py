@@ -5,16 +5,22 @@ from car_manager import CarManager
 from scoreboard import Scoreboard
 
 def game_init():
+    global game_is_on, level_speed
     scoreboard.__init__(screen)
     player.__init__(screen)
+
+    # for car in car_manager.lanes.cars:
+    #     car.clear()
+
     car_manager.__init__(player.position())
+
     screen.onkeypress(player.up, "Up")
     screen.onkeypress(player.dwn, "Down")
     screen.onkeypress(player.left, "Left")
     screen.onkeypress(player.right, "Right")
     screen.listen()
-
-    car_manager.build_lanes(player.position())
+    game_is_on = True
+    level_speed = 0.1
 
 
 def screen_init():
@@ -24,9 +30,21 @@ def screen_init():
     screen.title("Turtle Cross")
     screen.colormode(255)
     screen.tracer(0)
-    
+
+
+def build_lanes():
+    car_manager.build_lanes(player.position())
+
+
+def automation():
+    player.color_change()
+    car_manager.automation(player.position())
+    time.sleep(level_speed)
+    screen.update()
+
 
 def game_state():
+    global level_speed
     if car_manager.collision:
         player.reset_player()
         scoreboard.lost_life()
@@ -41,45 +59,35 @@ def game_state():
 
 
 def game_over():
+    global game_is_on
     screen_init()
-    screen.tracer(1)
+    screen.tracer(10)
     scoreboard.write_game_over()
     game_is_on = False
-    screen.onkeypress(restart_game, "r")
-    screen.listen()
-
-    # while not player.restart:
-    #     car_manager.game_over()
-    #     screen.update()
-    #     time.sleep(0.1)    
-
-
-def restart_game():
-    main_game()
 
 
 def main_game():
     screen_init()
     game_init()
-
-    game_is_on = True
-    level_speed = 0.1
+    build_lanes()
 
     while game_is_on:
-        player.color_change()
-        car_manager.automation(player.position())
+        automation()
         game_state()
-        time.sleep(level_speed)
-        screen.update()
+        if scoreboard.restart:
+            main_game()
 
 
 screen = Screen()
+screen_init()
 t = Turtle()
 scoreboard = Scoreboard(screen)
 player = Player(screen)
 car_manager = CarManager(player.position())
+game_is_on = True
+level_speed = 0.1
 
 main_game()
 
-t.mainloop()
 screen.exitonclick()
+t.mainloop()

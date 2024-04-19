@@ -5,7 +5,7 @@ COLORS = ["red", "orange", "yellow", "green", "blue", "purple"]
 STARTING_MOVE_DISTANCE = 5
 SPEED_LOW = 8
 SPEED_HIGH = 11
-COLLISION_DISTANCE = 15
+COLLISION_DISTANCE = 20
 
 random = Random()
 
@@ -25,8 +25,9 @@ class Car:
     def add_segment(self, position):
         segment = Turtle(shape="square", visible=False)
         segment.penup()
-        segment.shapesize(0.9, 0.9, 1)
-        segment.goto(600,600)
+        segment.clear()
+        segment.shapesize(1, 1, 1)
+        # segment.goto(600,600)
         segment.color(self.car_color)
         segment.goto(position)
         segment.setheading(180)

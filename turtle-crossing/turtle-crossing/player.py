@@ -1,7 +1,7 @@
 from turtle import Turtle, Screen
 from random import Random
 
-STARTING_POSITION = (0, -280)
+STARTING_POSITION = (0, -275)
 LEFT_WALL = -275
 RIGHT_WALL = 275
 TOP_WALL = 250
@@ -13,15 +13,13 @@ random = Random()
 class Player(Turtle):
     def __init__(self, screen):
         super().__init__() 
-        self.clear()
-        self.restart = False
         self.hideturtle()
         self.penup()
         self.shape("turtle")
         self.color("white")
         self.screen = screen
         self.screen.colormode(255)
-        self.shapesize(0.8, 0.8, 1)
+        self.shapesize(0.7, 0.7, 1)
         self.reset_player()
 
 
@@ -63,7 +61,3 @@ class Player(Turtle):
         g = random.randint(5, 255)
         b = random.randint(5, 255)
         self.color((r, g, b), (b, g, r))
-
-
-    def restart_game(self):
-        self.restart = True
